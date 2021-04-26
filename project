@@ -1,0 +1,138 @@
+void setup()
+{
+  Complex a = new Complex(5.0, 6.0);
+  Complex b = new Complex(-3.0, 4.0);
+  System.out.println(a);
+  System.out.println(b);
+  System.out.println(a.getReal());
+  System.out.println(a.getImag());
+  System.out.println(a.equals(a));
+  System.out.println(b.equals(b));
+  System.out.println(a.equals(b));
+  System.out.println(b.equals(a));
+  System.out.println(a.add(b));
+  System.out.println(a.sub(b));
+  System.out.println(a.mult(b));
+  System.out.println(b.mult(a));
+  System.out.println(a.multByScalar(2.0));
+  System.out.println(b.multByScalar(2.0));
+  System.out.println(a.conj());
+  System.out.println(b.conj());
+  System.out.println(a.div(b));
+  System.out.println(a.div(b).mult(b));
+  System.out.println(a.mag());
+  Complex c = new Complex(1.0, 1.0);
+  Polar cp = c.toPolar();
+  System.out.println(cp);
+  Polar cp2 = new Polar(1.4142135623730951, 0.7853981633974483);
+  Complex c2 = cp2.toComplex();
+  System.out.println(c2);
+}
+
+public class Complex
+{
+  private double realNum;
+  private double imagNum;
+  public Complex(double realNum, double imagNum)
+  {
+    this.realNum=realNum;
+    this.imagNum=imagNum;
+  }
+  public double getReal()
+  {
+    return this.realNum;
+  }
+  public double getImag()
+  {
+    return this.imagNum;
+  }
+  public void setReal(double newReal)
+  {
+    this.realNum=newReal;
+  }
+  public void setImag(double newImag)
+  {
+    this.imagNum=newImag;
+  }
+  public String toString()
+  {
+    String result="";
+    return result+="[" + this.realNum + ", " + this.imagNum + "]";
+  }
+  public boolean equals(Complex num2)
+  {
+    double subReal=this.realNum-num2.realNum;
+    double subImag=this.imagNum-num2.imagNum;
+    if ((Math.abs(subReal)<0.0000001)&&(Math.abs(subImag)<0.0000001))
+      return true;
+    else
+      return false;
+  }
+  public Complex add(Complex otherNum)
+  {
+    Complex third=new Complex(this.realNum+otherNum.getReal(), this.imagNum+otherNum.getImag());
+    return third;
+  }
+  public Complex sub(Complex otherNum)
+  {
+    Complex newComp=new Complex(this.realNum-otherNum.getReal(), this.imagNum-otherNum.getImag());
+    return newComp;
+  }
+  public Complex mult(Complex otherNum)
+  {
+    Complex newComp=new Complex(this.realNum*otherNum.getReal()-this.imagNum*otherNum.getImag(), this.realNum*otherNum.getImag()+this.imagNum*otherNum.getReal());
+    return newComp;
+  }
+  public Complex multByScalar(double num)
+  {
+    Complex newComp=new Complex (this.realNum*num, this.imagNum*num);
+    return newComp;
+  }
+  public Complex conj()
+  {
+    Complex newComp=new Complex(this.realNum, this.imagNum*-1);
+    return newComp;
+  }
+  public Complex div(Complex otherComp)
+  {
+    double Real = ((this.realNum * otherComp.realNum) - (this.imagNum * otherComp.imagNum * -1)) / ((otherComp.realNum * otherComp.realNum) + (otherComp.imagNum * otherComp.imagNum));
+    double Imag = ((this.imagNum * otherComp.realNum) + (this.realNum * otherComp.imagNum * -1)) / ((otherComp.realNum * otherComp.realNum) + (otherComp.imagNum * otherComp.imagNum));
+    Complex result = new Complex(Real, Imag);
+    return result;
+  }
+  public double mag()
+  {
+    return Math.abs(Math.sqrt(this.realNum*this.realNum+this.imagNum*this.imagNum));
+  }
+  public Polar toPolar()
+  {
+    double theta2=Math.atan2(this.imagNum, this.realNum);
+    double r2=Math.sqrt(this.realNum*this.realNum+this.imagNum*this.imagNum);
+    Polar newP=new Polar(theta2, r2);
+    return newP;
+  }
+}
+
+public class Polar
+{
+  private double theta;
+  private double r;
+
+  public Polar(double theta, double r)
+  {
+    this.theta=theta;
+    this.r=r;
+  }
+  public Complex toComplex()
+  {
+    double Real=this.r*Math.cos(this.theta);
+    double Imag=this.r*Math.sin(this.theta);
+    Complex result=new Complex(Real, Imag);
+    return result;
+  }
+  public String toString()
+  {
+    String result="<" + this.r+", " +this.theta+">";
+    return result;
+  }
+}
